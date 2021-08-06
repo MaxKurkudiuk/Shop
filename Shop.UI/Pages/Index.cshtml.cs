@@ -17,18 +17,12 @@ namespace Shop.UI.Pages {
             _context = context;
         }
 
-        public class ProductViewModel {
-            public string Name { get; set; }
-            public string Description { get; set; }
-            public decimal Value { get; set; }
-        }
-
         public void OnGet() {
 
         }
 
         public async Task<IActionResult> OnPost() {
-            await new CreateProduct(_context).Do(Product.Name, Product.Description, Product.Value);
+            await new CreateProduct(_context).Do(Product);
 
             return RedirectToPage("Index");
         }
