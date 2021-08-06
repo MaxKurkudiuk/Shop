@@ -1,12 +1,8 @@
 ﻿using Shop.Database;
 using Shop.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Shop.Application.Products {
+namespace Shop.Application.CreateProducts {
     public class CreateProduct {
         private ApplicationDbContext _context;
 
