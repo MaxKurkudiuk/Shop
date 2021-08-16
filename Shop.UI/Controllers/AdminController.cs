@@ -3,7 +3,7 @@ using Shop.Application.ProductsAdmin;
 using Shop.Database;
 
 namespace Shop.UI.Controllers {
-    [Route("controller")]
+    [Route("[controller]")]
     public class AdminController : Controller
     {
         private ApplicationDbContext _context;
