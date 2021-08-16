@@ -1,18 +1,10 @@
 ﻿var app = new Vue({
     el: '#app',
     data: {
-        price: 0,
-        showPrice: true,
         loading: false,
         products: []
     },
     methods: {
-        togglePrice: function () {
-            this.showPrice = !this.showPrice;
-        },
-        //alert(v) {
-        //    alert(v);
-        //},
         getProducts() {
             this.loading = true;
             axios.get(url = '/Admin/products', {
@@ -33,8 +25,5 @@
         }
     },
     computed: {
-        formatPrice: function () {
-            return "$" + this.price;
-        }
     }
 })
