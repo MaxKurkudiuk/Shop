@@ -10,6 +10,13 @@
             {{product.id}} - {{product.name}} - {{product.description}}
         </p>
     </div>
+
+    <div>
+        <input v-model="productModel.name" />
+        <input v-model="productModel.description" />
+        <input v-model="productModel.value" />
+        <button @@click="createProduct">Create Product</button>
+    </div>
 </div>
 
 @section scripts{
