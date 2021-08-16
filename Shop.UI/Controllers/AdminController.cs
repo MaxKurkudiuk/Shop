@@ -19,12 +19,12 @@ namespace Shop.UI.Controllers {
         public IActionResult GetProduct(int id) => Ok(new GetProduct(_context).Do(id));
 
         [HttpPost("products")]
-        public IActionResult CreateProduct(CreateProduct.ProductViewModel vm) => Ok(new CreateProduct(_context).Do(vm));
+        public IActionResult CreateProduct([FromBody] CreateProduct.ProductViewModel vm) => Ok(new CreateProduct(_context).Do(vm));
 
         [HttpDelete("products/{id}")]
         public IActionResult DeleteProduct(int id) => Ok(new DeleteProduct(_context).Do(id));
 
         [HttpPut("products")]
-        public IActionResult UpdateProduct(UpdateProduct.ProductViewModel vm) => Ok(new UpdateProduct(_context).Do(vm));
+        public IActionResult UpdateProduct([FromBody] UpdateProduct.ProductViewModel vm) => Ok(new UpdateProduct(_context).Do(vm));
     }
 }
