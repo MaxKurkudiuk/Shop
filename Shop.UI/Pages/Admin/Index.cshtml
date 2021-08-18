@@ -9,14 +9,16 @@
             <div class="menu">
                 <p class="menu-label">Admin Menu</p>
                 <ul class="menu-list">
-                    <li><a href="#">Products</a></li>
-                    <li><a href="#">Orders</a></li>
-                    <li><a href="#">Stock</a></li>
+                    <li><a href="#" @@click="menu = 0">Products</a></li>
+                    <li><a href="#" @@click="menu = 1">Orders</a></li>
+                    <li><a href="#" @@click="menu = 2">Stock</a></li>
                 </ul>
             </div>
         </div>
         <div class="column is-9">
-            <product-manager></product-manager>
+            <product-manager v-if="menu === 0"></product-manager>
+            <p v-else-if="menu === 1">Orders</p>
+            <p v-else-if="menu === 2">Stock</p>
         </div>
     </div>
 </div>
