@@ -1,7 +1,7 @@
 ﻿Vue.component('product-manager', {
     template: `<div>
                 <div v-if="!editing">
-                    <button class="button" @@click="newProduct">Add New Product</button>
+                    <button class="button" @click="newProduct">Add New Product</button>
                     <table class="table">
                         <tr>
                             <th>Id</th>
@@ -14,8 +14,8 @@
                             <td>{{product.id}}</td>
                             <td>{{product.name}}</td>
                             <td>{{product.value}}</td>
-                            <td><a href="#" @@click="editProduct(product.id, index)">Edit</a></td>
-                            <td><a href="#" @@click="deleteProduct(product.id, index)">Remove</a></td>
+                            <td><a href="#" @click="editProduct(product.id, index)">Edit</a></td>
+                            <td><a href="#" @click="deleteProduct(product.id, index)">Remove</a></td>
                         </tr>
                     </table>
                 </div>
@@ -39,9 +39,9 @@
                             <input class="input" v-model="productModel.value" />
                         </div>
                     </div>
-                    <button class="button is-success" @@click="createProduct" v-if="!productModel.id">Create Product</button>
-                    <button class="button is-warning" @@click="updateProduct" v-else>Update Product</button>
-                    <button class="button" @@click="cancel">Cancel</button>
+                    <button class="button is-success" @click="createProduct" v-if="!productModel.id">Create Product</button>
+                    <button class="button is-warning" @click="updateProduct" v-else>Update Product</button>
+                    <button class="button" @click="cancel">Cancel</button>
                 </div>
             </div>`,
     data() {
