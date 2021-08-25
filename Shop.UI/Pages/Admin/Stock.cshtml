@@ -2,31 +2,44 @@
 @model StockModel
 @{
 }
-<div id="stock" class="content">
-    <h2>Stock</h2>
-    <div>
-        <button class="button" @@click="newStock">Add New Stock</button>
-        <table class="table">
-            <tr>
-                <th>Id</th>
-                <th>Description</th>
-                <th>QTY</th>
-                <th></th>
-                <th></th>
-            </tr>
-            <tr v-for="(stock, index) in stocks">
-                <td>{{stock.id}}</td>
-                <td>{{stock.description}}</td>
-                <td>{{stock.qty}}</td>
-                <td><a href="#" @*@@click="editStock(stiock.id, index)"*@>Edit</a></td>
-                <td><a href="#" @*@@click="deleteStock(stock.id, index)"*@>Remove</a></td>
-            </tr>
-        </table>
+<div id="app">
+    <div class="columns">
+        <div class="column is-3">
+            <table class="table">
+                <tr v-for="product in products" @@click="selectProduct(product)">
+                    <td>{{product.description}}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="column is-6" v-if="selectedProduct">
+            <table class="table">
+                <tr v-for="(stock, index) in selectedProduct.stock">
+                    <td><input class="input" v-model="stock.description" /></td>
+                    <td><input class="input" v-model="stock.qty" /></td>
+                    <td><a class="has-text-danger" @@click="deleteStock(stock.id, index)">Remove</a></td>
+                </tr>
+            </table>
+            <a class="button is-warning" @@click="updateStock">
+                Update Products
+            </a>
+        </div>
+        <div class="column is-3" v-if="selectedProduct">
+            <h2 class="title">New Stock</h2>
+            <div class="field">
+                <div class="control">
+                    <input class="input" v-model="newStock.description" />
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input" v-model="newStock.qty" />
+                </div>
+            </div>
+            <a class="button is-success" @@click="addStock">Add</a>
+        </div>
     </div>
 </div>
 
 @section scripts{
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="~/js/admin/stock.js"></script>
 }
