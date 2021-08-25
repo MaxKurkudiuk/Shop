@@ -31,20 +31,19 @@ namespace Shop.Application.StockAdmin {
                 Stock = request.Stock
             };
         }
-    }
+        public class StockViewModel {
+            public int Id { get; set; }
+            public string Description { get; set; }
+            public int Qty { get; set; }
+            public int ProductId { get; set; }
+        }
 
-    public class StockViewModel {
-        public int Id { get; set; }
-        public string Description { get; set; }
-        public int Qty { get; set; }
-        public int ProductId { get; set; }
-    }
+        public class Request {
+            public IEnumerable<StockViewModel> Stock { get; set; }
+        }
 
-    public class Request {
-        public IEnumerable<StockViewModel> Stock { get; set; }
-    }
-
-    public class Response {
-        public IEnumerable<StockViewModel> Stock { get; set; }
+        public class Response {
+            public IEnumerable<StockViewModel> Stock { get; set; }
+        }
     }
 }
