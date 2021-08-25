@@ -6,21 +6,20 @@
     <title>@ViewData["Title"] - Shop.UI</title>
     
     <environment include="Development">
-        <link rel="stylesheet" href="~/css/site.css" />
         <link href="~/lib/bulma/css/bulma.css" rel="stylesheet" />
     </environment>
     <environment include="Production">
-        <link rel="stylesheet" href="~/css/site.css" />
         <link href="~/lib/bulma/css/bulma.min.css" rel="stylesheet" />
     </environment>
 </head>
 <body>
-    <h3 class="has-text-centered">Admin Panel</h3>
+    <h3 class="title has-text-centered">Admin Panel</h3>
     <a asp-page="/Index">Home</a>
 
     <div class="container">
         <div class="columns">
-            <div class="column is-3">   @*is-3 => 3 segments*@
+            <div class="column is-3">
+                @*is-3 => 3 segments*@
                 <div class="menu">
                     <p class="menu-label">Admin Menu</p>
                     <ul class="menu-list">
@@ -40,12 +39,8 @@
         </div>
     </div>
 
-    <environment include="Development">
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment include="Production">
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

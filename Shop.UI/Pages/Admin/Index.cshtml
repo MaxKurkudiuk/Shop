@@ -18,8 +18,8 @@
                 <td>{{product.id}}</td>
                 <td>{{product.name}}</td>
                 <td>{{product.value}}</td>
-                <td><a href="#" @@click="editProduct(product.id, index)">Edit</a></td>
-                <td><a href="#" @@click="deleteProduct(product.id, index)">Remove</a></td>
+                <td><a class="button" @@click="editProduct(product.id, index)">Edit</a></td>
+                <td><a class="button" @@click="deleteProduct(product.id, index)">Remove</a></td>
             </tr>
         </table>
     </div>
@@ -50,7 +50,5 @@
 </div>
 
 @section scripts{
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="~/js/admin/products.js"></script>
 }

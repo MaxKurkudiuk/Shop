@@ -1,112 +1,86 @@
 ﻿var app = new Vue({
     el: '#app',
     data: {
-        editing: false,
-        loading: false,
-        objectIndex: 0,
-        stockModel: {
-            id: 0,
-            description: "Stock Description",
-            qty: 0,
+        products: [],
+        selectedProduct: null,
+        newStock: {
             productId: 0,
-            product: {}
-        },
-        stocks: []
+            description: "Size",
+            qty: 10
+        }
     },
     mounted() {  /*On first run (automatically)*/
-        this.getStocks();
+        this.getStock();
     },
     methods: {
-        //getStock(id) {
-        //    this.loading = true;
-        //    axios.get('/Admin/stock/' + id)
-        //        .then(res => {
-        //            console.log(res);
-        //            var stock = res.data;
-        //            this.stockModel = {
-        //                id: stock.id,
-        //                description: stock.description,
-        //                qty: product.qty
-        //            };
-        //        })
-        //        .catch(err => {
-        //            console.log(err);
-        //        })
-        //        .then(() => {
-        //            this.loading = false;
-        //        });
-        //},
-        //getProducts() {
-        //    this.loading = true;
-        //    axios.get('/Admin/stock')
-        //        .then(res => {
-        //            console.log(res);
-        //            this.stock = res.data;
-        //        })
-        //        .catch(err => {
-        //            console.log(err);
-        //        })
-        //        .then(() => {
-        //            this.loading = false;
-        //        });
-        //},
-        createStock() {
+        getStock() {
             this.loading = true;
-            axios.post('/Admin/stock', this.stockModel)
+            axios.get('/Admin/stocks')
                 .then(res => {
-                    console.log(res.data);
-                    this.stocks.push(res.data);
+                    console.log(res);
+                    this.products = res.data;
                 })
                 .catch(err => {
                     console.log(err);
                 })
                 .then(() => {
                     this.loading = false;
-                    this.editing = false;
                 });
         },
-        //updateProduct() {
-        //    this.loading = true;
-        //    axios.put('/Admin/stock', this.productModel)
-        //        .then(res => {
-        //            console.log(res.data);
-        //            this.products.splice(this.objectIndex, 1, res.data);
-        //        })
-        //        .catch(err => {
-        //            console.log(err);
-        //        })
-        //        .then(() => {
-        //            this.loading = false;
-        //            this.editing = false;
-        //        });
-        //},
-        //deleteProduct(id, index) {
-        //    this.loading = true;
-        //    axios.delete('/Admin/stock/' + id)
-        //        .then(res => {
-        //            console.log(res);
-        //            this.products.splice(index, 1);
-        //        })
-        //        .catch(err => {
-        //            console.log(err);
-        //        })
-        //        .then(() => {
-        //            this.loading = false;
-        //        });
-        //},
-        newStock() {
-            this.editing = true;
-            this.productModel.id = 0;
+        addStock() {
+            this.loading = true;
+            axios.post('/Admin/stocks', this.newStock)
+                .then(res => {
+                    console.log(res);
+                    this.selectedProduct.stock.push(res.data);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+                .then(() => {
+                    this.loading = false;
+                });
         },
-        //editProduct(id, index) {
-        //    this.objectIndex = index;
-        //    this.getProduct(id);
-        //    this.editing = true;
-        //},
-        cancel() {
-            this.editing = false;
+        updateStock() {
+            this.loading = true;
+            axios.put('/Admin/stocks', {
+                stock: this.selectedProduct.stock.map(x => {
+                    return {
+                        id: x.id,
+                        description: x.description,
+                        qty: x.qty,
+                        productId: this.selectedProduct.id
+                    };
+                })
+            })
+                .then(res => {
+                    console.log(res);
+                    this.products = res.data;
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+                .then(() => {
+                    this.loading = false;
+                });
+        },
+        deleteStock(id, index) {
+            this.loading = true;
+            axios.delete('/Admin/stocks/' + id)
+                .then(res => {
+                    console.log(res);
+                    this.selectedProduct.stock.splice(index, 1);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+                .then(() => {
+                    this.loading = false;
+                });
+        },
+        selectProduct(product) {
+            this.selectedProduct = product;
+            this.newStock.productId = product.id;
         }
-    },
-    computed: {
     }
 })
