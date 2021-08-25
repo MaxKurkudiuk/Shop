@@ -1,0 +1,24 @@
+﻿@page "{name}"
+@model Shop.UI.Pages.ProductModel
+@{
+}
+
+@*
+    before => href="/Product?name=NameText"
+    asp-route-name="@p.Name" => asp-route-name => name => @page "{name}"
+    after  => href="/Product/NameText"
+*@
+
+<div>
+    <p>@Model.Product.Name</p>
+    <p>@Model.Product.Description</p>
+    <p>@Model.Product.Value</p>
+    <div>
+        <label>Stock</label>
+        <select>
+            @foreach (var s in Model.Product.Stock) {
+                <option value="@s.Id">@s.Description</option>
+            }
+        </select>
+    </div>
+</div>
