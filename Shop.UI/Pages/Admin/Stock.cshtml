@@ -2,4 +2,31 @@
 @model StockModel
 @{
 }
-<h2>Stock</h2>
+<div id="stock" class="content">
+    <h2>Stock</h2>
+    <div>
+        <button class="button" @@click="newStock">Add New Stock</button>
+        <table class="table">
+            <tr>
+                <th>Id</th>
+                <th>Description</th>
+                <th>QTY</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr v-for="(stock, index) in stocks">
+                <td>{{stock.id}}</td>
+                <td>{{stock.description}}</td>
+                <td>{{stock.qty}}</td>
+                <td><a href="#" @*@@click="editStock(stiock.id, index)"*@>Edit</a></td>
+                <td><a href="#" @*@@click="deleteStock(stock.id, index)"*@>Remove</a></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+@section scripts{
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="~/js/admin/stock.js"></script>
+}
