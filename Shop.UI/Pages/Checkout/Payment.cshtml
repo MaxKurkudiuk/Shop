@@ -1,6 +1,17 @@
 ﻿@page
+@inject IOptions<StripeSettings> Stripe
 @model Shop.UI.Pages.Checkout.PaymentModel
 @{
 }
 
 <h2>Payment</h2>
+
+<div>
+    <form method="post">
+        <article>
+            <label>Amount: $5.00</label>
+        </article>
+        <script src="//checkout.stripe.com/v2/checkout.js" class="stripe-button" data-key="@Stripe.Value.PublishableKey" data-locale="auto" data-description="Sample Charge" data-amount="500">
+        </script>
+    </form>
+</div>

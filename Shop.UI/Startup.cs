@@ -6,19 +6,20 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Shop.Database;
 using System;
+using Stripe;
 
 namespace Shop.UI {
     public class Startup {
         public Startup(IConfiguration configuration) {
-            Configuration = configuration;
+            _config = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration _config { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
-                Configuration.GetConnectionString("DefaultConnection")));
+                _config.GetConnectionString("DefaultConnection")));
 
             //services.AddControllersWithViews();
             services.AddRazorPages();
@@ -27,6 +28,10 @@ namespace Shop.UI {
                 options.Cookie.Name = "Cart";
                 options.Cookie.MaxAge = TimeSpan.FromDays(365);
             });
+
+            StripeConfiguration.ApiKey = _config.GetSection("Stripe")["SecretKey"];
+
+            services.Configure<StripeSettings>(_config.GetSection("Stripe"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
