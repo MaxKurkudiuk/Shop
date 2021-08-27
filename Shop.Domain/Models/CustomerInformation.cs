@@ -1,11 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace Shop.Domain.Models {
-    public class Order {
-        public int Id { get; set; }
-        public string OrderRef { get; set; }
-        public string StripeReference { get; set; }     // customer.Id
-
+﻿namespace Shop.Domain.Models {
+    public class CustomerInformation
+    {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -15,7 +10,5 @@ namespace Shop.Domain.Models {
         public string Address2 { get; set; }
         public string City { get; set; }
         public string PostCode { get; set; }
-
-        public ICollection<OrderProduct> OrderProducts { get; set; }
     }
 }
