@@ -35,10 +35,10 @@ namespace Shop.UI.Pages.Checkout {
             });
 
             var charge = charges.Create(new ChargeCreateOptions {
-                Amount = cartOrder.GetTotalCharge(),
-                Description = "Shop Purchase",
-                Currency = "usd",
-                Customer = customer.Id
+                Amount = cartOrder.GetTotalCharge(), // Total payment amount
+                Description = "Shop Purchase",      // Form title
+                Currency = "usd",                   // currency type
+                Customer = customer.Id              // customer in current session
             });
 
             return RedirectToPage("/Index");
