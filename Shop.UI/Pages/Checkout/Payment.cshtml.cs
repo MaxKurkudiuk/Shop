@@ -30,7 +30,7 @@ namespace Shop.UI.Pages.Checkout {
             var customers = new CustomerService();
             var charges = new ChargeService();
 
-            var cartOrder = new GetOrder(HttpContext.Session, _context).Do();
+            var cartOrder = new Application.Cart.GetOrder(HttpContext.Session, _context).Do();
 
             var customer = customers.Create(new CustomerCreateOptions {
                 Email = stripeEmail,
