@@ -37,6 +37,7 @@ namespace Shop.Application.Orders {
 
         public async Task<bool> Do(Request request) {
             var order = new Order() {
+                OrderRef = CreateOrderReferance(),
                 StripeReference = request.StripeReference,
 
                 FirstName = request.FirstName,
@@ -56,6 +57,20 @@ namespace Shop.Application.Orders {
 
             _context.Orders.Add(order);
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        /// Generete unique string key
+        public string CreateOrderReferance() {
+            var chars = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789";
+            var result = new char[12];
+            var random = new Random();
+
+            do {
+                for (int i = 0; i < result.Length; i++)
+                    result[i] = chars[random.Next(chars.Length)];
+            } while (_context.Orders.Any(x => x.OrderRef == new string(result)));
+
+            return new string(result);
         }
     }
 }
