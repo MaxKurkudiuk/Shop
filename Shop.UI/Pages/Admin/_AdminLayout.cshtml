@@ -6,10 +6,12 @@
     <title>@ViewData["Title"] - Shop.UI</title>
     
     <environment include="Development">
-        <link href="~/lib/bulma/css/bulma.css" rel="stylesheet" />
+        @*<link href="~/lib/bulma/css/bulma.css" rel="stylesheet" />*@
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.css">
     </environment>
     <environment include="Production">
-        <link href="~/lib/bulma/css/bulma.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+        @*<link href="~/lib/bulma/css/bulma.min.css" rel="stylesheet" />*@
     </environment>
 </head>
 <body>
