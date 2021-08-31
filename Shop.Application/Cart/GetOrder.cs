@@ -31,6 +31,18 @@ namespace Shop.Application.Cart {
             public int Value { get; set; }
         }
 
+        public decimal GetTotalValue() {
+            var cart = _session.GetString("cart");
+            
+            var cartList = JsonConvert.DeserializeObject<List<CartProduct>>(cart);
+
+            return _context.Stock
+                .Include(x => x.Product)
+                .AsEnumerable()
+                .Where(x => cartList.Any(y => y.StockId == x.Id))
+                .Sum(x => x.Product.Value * cartList.FirstOrDefault(y => y.StockId == x.Id).Qty);
+        }
+
         public Response Do() {
             var cart = _session.GetString("cart");
             var cartList = JsonConvert.DeserializeObject<List<CartProduct>>(cart);
