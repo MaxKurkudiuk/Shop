@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Shop.Domain.Models;
 
 namespace Shop.Database {
@@ -17,7 +16,7 @@ namespace Shop.Database {
         public DbSet<Stock> Stock { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderStock> OrderStocks { get; set; }
-        public DbSet<StockOnHold> StocksOnHolds { get; set; }
+        public DbSet<StockOnHold> StocksOnHold { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder) {
             builder.Entity<OrderStock>()
@@ -26,7 +25,7 @@ namespace Shop.Database {
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-            //optionsBuilder.LogTo(System.Console.WriteLine);
+            optionsBuilder.LogTo(System.Console.WriteLine);
             base.OnConfiguring(optionsBuilder);
         }
     }
