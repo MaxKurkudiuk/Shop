@@ -4,9 +4,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 using Shop.Database;
 using System;
 using Stripe;
+using Microsoft.AspNetCore.Identity;
 
 namespace Shop.UI {
     public class Startup {
@@ -18,8 +20,27 @@ namespace Shop.UI {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
+            services.Configure<CookiePolicyOptions>(options => {
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
                 _config.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<IdentityUser, IdentityRole>(options => {
+                // Password settings
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+            }).AddEntityFrameworkStores<ApplicationDbContext>();
+
+            // Authorization rules
+            services.AddAuthorization(options => {
+                options.AddPolicy("Admin", policy => policy.RequireClaim("Admin"));
+                options.AddPolicy("Manager", policy => policy.RequireClaim("Manager"));
+            });
 
             //services.AddControllersWithViews();
             services.AddRazorPages();
@@ -53,6 +74,8 @@ namespace Shop.UI {
             app.UseAuthorization();
 
             app.UseSession();
+
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapRazorPages();
