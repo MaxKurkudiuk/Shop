@@ -17,7 +17,7 @@ namespace Shop.Application.Products {
             var stocksOnHold = _context.StocksOnHold.Where(x => x.ExpiryDate < DateTime.Now).ToList();
 
             if (stocksOnHold.Count > 0) {
-                var stockToReturn = _context.Stock.Where(x => stocksOnHold.Any(y => y.StockId == x.Id)).ToList();
+                var stockToReturn = _context.Stock.AsEnumerable().Where(x => stocksOnHold.Any(y => y.StockId == x.Id)).ToList();
 
                 foreach (var stock in stockToReturn)
                     stock.Qty += stocksOnHold.FirstOrDefault(x => x.StockId == stock.Id).Qty;

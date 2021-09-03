@@ -36,7 +36,7 @@ namespace Shop.Application.Cart {
 
             stockOnHold.Qty -= request.Qty;
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();  // save new StockOnHold and update Stock => stockOnHold.Qty
 
             var cartList = new List<CartProduct>();
             var stringObject = _session.GetString("cart");
