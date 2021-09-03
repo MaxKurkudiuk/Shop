@@ -23,18 +23,24 @@ namespace Shop.Application.Cart {
         }
 
         public async Task<bool> Do(Request request) {
-            var stockOnHold = _context.Stock.Where(x => x.Id == request.StockId).FirstOrDefault();
+            var stockOnHold = _context.StocksOnHold.Where(x => x.SessionId == _session.Id).ToList();
+            var stockToHold = _context.Stock.Where(x => x.Id == request.StockId).FirstOrDefault();
 
-            if (stockOnHold.Qty < request.Qty)
+            if (stockToHold.Qty < request.Qty)
                 return false; // return not enough stock
 
             _context.StocksOnHold.Add(new StockOnHold() {
-                StockId = stockOnHold.Id,
+                StockId = stockToHold.Id,
+                SessionId = _session.Id,
                 Qty = request.Qty,
                 ExpiryDate = DateTime.Now.AddMinutes(20)
             });
 
-            stockOnHold.Qty -= request.Qty;
+            stockToHold.Qty -= request.Qty;
+
+            foreach (var stock in stockOnHold) {
+                stock.ExpiryDate = DateTime.Now.AddMinutes(20);
+            }
 
             await _context.SaveChangesAsync();  // save new StockOnHold and update Stock => stockOnHold.Qty
 

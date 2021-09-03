@@ -26,7 +26,7 @@ namespace Shop.UI {
 
             services.AddSession(options => {
                 options.Cookie.Name = "Cart";
-                options.Cookie.MaxAge = TimeSpan.FromDays(365);
+                options.Cookie.MaxAge = TimeSpan.FromMinutes(20);
             });
 
             StripeConfiguration.ApiKey = _config.GetSection("Stripe")["SecretKey"];

@@ -48,9 +48,12 @@ namespace Shop.UI.Pages.Checkout {
                 Customer = customer.Id              // customer in current session
             });
 
+            var sessionId = HttpContext.Session.Id;
+
             // create order
             await new CreateOrder(_context).Do(new CreateOrder.Request() {
                 StripeReference = charge.Id,
+                SessionId = sessionId,
 
                 FirstName = cartOrder.CustomerInformation.FirstName,
                 LastName = cartOrder.CustomerInformation.LastName,
