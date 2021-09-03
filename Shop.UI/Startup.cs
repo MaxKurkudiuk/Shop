@@ -36,14 +36,22 @@ namespace Shop.UI {
                 options.Password.RequireUppercase = false;
             }).AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.ConfigureApplicationCookie(options => {
+                options.LoginPath = "/Accounts/Login";  // default page if not auch
+            });
+
             // Authorization rules
             services.AddAuthorization(options => {
-                options.AddPolicy("Admin", policy => policy.RequireClaim("Admin"));
-                options.AddPolicy("Manager", policy => policy.RequireClaim("Manager"));
+                options.AddPolicy("Admin", policy => policy.RequireClaim("Role", "Admin"));
+                options.AddPolicy("Manager", policy => policy.RequireClaim("Role", "Manager"));
             });
 
             //services.AddControllersWithViews();
-            services.AddRazorPages();
+            services
+                .AddRazorPages()
+                .AddRazorPagesOptions(options => {
+                    options.Conventions.AuthorizeFolder("/Admin");
+            });
 
             services.AddSession(options => {
                 options.Cookie.Name = "Cart";
@@ -71,15 +79,15 @@ namespace Shop.UI {
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
             app.UseSession();
 
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                //endpoints.MapDefaultControllerRoute();
             });
         }
     }
