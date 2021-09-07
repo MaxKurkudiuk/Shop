@@ -1,14 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Shop.Application.OrdersAdmin;
-using Shop.Application.ProductsAdmin;
-using Shop.Application.StockAdmin;
+﻿using Microsoft.AspNetCore.Mvc;
 using Shop.Database;
-using System.Threading.Tasks;
 
 namespace Shop.UI.Controllers {
     [Route("[controller]")]
-    //[Authorize(Policy = "Manager")]
     public class AdminController : Controller
     {
         private ApplicationDbContext _context;
@@ -17,40 +11,5 @@ namespace Shop.UI.Controllers {
             _context = context;
         }
 
-        [HttpGet("products")]
-        public IActionResult GetProducts() => Ok(new GetProducts(_context).Do());
-
-        [HttpGet("products/{id}")]
-        public IActionResult GetProduct(int id) => Ok(new GetProduct(_context).Do(id));
-
-        [HttpPost("products")]
-        public async Task<IActionResult> CreateProduct([FromBody] CreateProduct.Request request) => Ok(await new CreateProduct(_context).Do(request));
-
-        [HttpDelete("products/{id}")]
-        public async Task<IActionResult> DeleteProduct(int id) => Ok(await new DeleteProduct(_context).Do(id));
-
-        [HttpPut("products")]
-        public async Task<IActionResult> UpdateProduct([FromBody] UpdateProduct.Request request) => Ok(await new UpdateProduct(_context).Do(request));
-
-
-        [HttpGet("stocks")]
-        public IActionResult GetStock() => Ok(new GetStock(_context).Do());
-
-        [HttpPost("stocks")]
-        public async Task<IActionResult> CreateStock([FromBody] CreateStock.Request request) => Ok(await new CreateStock(_context).Do(request));
-
-        [HttpDelete("stocks/{id}")]
-        public async Task<IActionResult> DeleteStock(int id) => Ok(await new DeleteStock(_context).Do(id));
-
-        [HttpPut("stocks")]
-        public async Task<IActionResult> UpdateStock([FromBody] UpdateStock.Request request) => Ok(await new UpdateStock(_context).Do(request));
-
-
-        [HttpGet("orders")]
-        public IActionResult GetOrders(int status) => Ok(new GetOrders(_context).Do(status));
-        [HttpGet("orders/{id}")]
-        public IActionResult GetOrder(int id) => Ok(new GetOrder(_context).Do(id));
-        [HttpPut("orders/{id}")]
-        public async Task<IActionResult> UpdateOrder(int id) => Ok(await new UpdateOrder(_context).Do(id));
     }
 }

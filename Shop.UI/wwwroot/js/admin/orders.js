@@ -17,7 +17,7 @@
     methods: {
         getOrders() {
             this.loading = true;
-            axios.get('/Admin/orders?status=' + this.status)
+            axios.get('/orders?status=' + this.status)
                 .then(result => {
                     console.log(result.data);
                     this.orders = result.data;
@@ -26,7 +26,7 @@
         },
         selectOrder(id) {
             this.loading = true;
-            axios.get('/Admin/orders/' + id)
+            axios.get('/orders/' + id)
                 .then(result => {
                     this.selectedOrder = result.data;
                     this.loading = false;
@@ -34,7 +34,7 @@
         },
         updateOrder() {
             this.loading = true;
-            axios.put('/Admin/orders/' + this.selectedOrder.id, null)
+            axios.put('/orders/' + this.selectedOrder.id, null)
                 .then(result => {
                     this.loading = false;
                     this.exitOrder();
