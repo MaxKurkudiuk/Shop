@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Shop.UI</title>
-    
+
     <environment include="Development">
         @*<link href="~/lib/bulma/css/bulma.css" rel="stylesheet" />*@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.css">
@@ -25,12 +25,14 @@
             <div class="column is-3">
                 @*is-3 => 3 segments*@
                 <div class="menu">
-                    <p class="menu-label">Store Menu</p>
-                    <ul class="menu-list">
-                        <li><a asp-page="/Admin/Index">Products</a></li>
-                        <li><a asp-page="/Admin/Orders">Orders</a></li>
-                        <li><a asp-page="/Admin/Stock">Stock</a></li>
-                    </ul>
+                    @if ((await authService.AuthorizeAsync(User, "Manager")).Succeeded) {
+                        <p class="menu-label">Store Menu</p>
+                        <ul class="menu-list">
+                            <li><a asp-page="/Admin/Index">Products</a></li>
+                            <li><a asp-page="/Admin/OrderManagement">Orders</a></li>
+                            <li><a asp-page="/Admin/Stock">Stock</a></li>
+                        </ul>
+                    }
                     @if ((await authService.AuthorizeAsync(User, "Admin")).Succeeded) {
                         <p class="menu-label">Admin Menu</p>
                         <ul class="menu-list">
