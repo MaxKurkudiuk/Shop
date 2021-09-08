@@ -9,6 +9,7 @@ using Shop.Database;
 using System;
 using Stripe;
 using Microsoft.AspNetCore.Identity;
+using Shop.Application.UsersAdmin;
 
 namespace Shop.UI {
     public class Startup {
@@ -43,7 +44,10 @@ namespace Shop.UI {
             // Authorization rules
             services.AddAuthorization(options => {
                 options.AddPolicy("Admin", policy => policy.RequireClaim("Role", "Admin"));
-                options.AddPolicy("Manager", policy => policy.RequireClaim("Role", "Manager"));
+                //options.AddPolicy("Manager", policy => policy.RequireClaim("Role", "Manager"));
+                options.AddPolicy("Manager", policy => policy
+                    .RequireAssertion(context => 
+                        context.User.HasClaim("Role", "Manager") || context.User.HasClaim("Role", "Admin")));
             });
 
             //services.AddControllersWithViews();
@@ -51,7 +55,8 @@ namespace Shop.UI {
                 .AddRazorPages()
                 .AddRazorPagesOptions(options => {
                     options.Conventions.AuthorizeFolder("/Admin");
-            });
+                    options.Conventions.AuthorizePage("/Admin/ConfigureUsers", "Admin");    // Only the administrator can access this page
+                });
 
             services.AddSession(options => {
                 options.Cookie.Name = "Cart";
@@ -61,6 +66,8 @@ namespace Shop.UI {
             StripeConfiguration.ApiKey = _config.GetSection("Stripe")["SecretKey"];
 
             services.Configure<StripeSettings>(_config.GetSection("Stripe"));
+
+            services.AddTransient<CreateUser>();    // Dependency Injection
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

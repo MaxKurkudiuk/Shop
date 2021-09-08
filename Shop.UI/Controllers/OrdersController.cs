@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Shop.Application.OrdersAdmin;
 using Shop.Database;
 using System.Threading.Tasks;
 
 namespace Shop.UI.Controllers {
     [Route("[controller]")]
+    [Authorize(Policy = "Manager")]
     public class OrdersController : Controller {
         private ApplicationDbContext _context;
 
