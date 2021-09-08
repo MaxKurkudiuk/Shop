@@ -9,22 +9,71 @@
     after  => href="/Product/NameText"
 *@
 
-<div>
-    <p>@Model.Product.Name</p>
-    <p>@Model.Product.Description</p>
-    <p>@Model.Product.Value</p>
-    <div>
-        <form method="post">
-            <label>Stock</label>
-            <select asp-for="CartViewModel.StockId">
-                @foreach (var s in Model.Product.Stock) {
-                    <option value="@s.Id">@s.Description</option>
-                }
-            </select>
-            <label>Qty:</label>
-            <input asp-for="CartViewModel.Qty" />
-            <button type="submit">Submit</button>
-        </form>
+<div class="hero">
+    <div class="hero-body">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-6">
+                    <figure class="image">
+                        <img src="~/images/testProductImage.jpg" />
+                    </figure>
+                </div>
+                <div class="column is-6">
+                    <section class="content">
+                        <p class="title">@Model.Product.Name</p>
+                        <p class="subtitle">@Model.Product.Description</p>
+                        <p class="subtitle">@Model.Product.Value</p>
+                        <p>
+                            Pull out the content that is most important to them and find engaging, visual ways to get all the relevant information to them without any headache. Your buyer personas should inform the overall form and approach toward your product descriptions, including the website design and white space on the page.
+                        </p>
+                        <footer>
+                            <form method="post">
+                                <div class="field is-horizontal">
+                                    <div class="field-label is-normal">
+                                        <label class="label">Size</label>
+                                    </div>
+                                    <div class="field-body">
+                                        <div class="field is-narrow">
+                                            <div class="control">
+                                                <div class="select is-fullwidth">
+                                                    <select asp-for="CartViewModel.StockId">
+                                                        @foreach (var s in Model.Product.Stock) {
+                                                            <option value="@s.Id">@s.Description</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field is-horizontal">
+                                    <div class="field-label is-normal">
+                                        <label class="label">Qty</label>
+                                    </div>
+                                    <div class="field-body">
+                                        <div class="field is-narrow">
+                                            <div class="control">
+                                                <input class="input" asp-for="CartViewModel.Qty" value="1" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field is-horizontal">
+                                    <div class="field-label is-normal">
+                                    </div>
+                                    <div class="field-body">
+                                        <div class="field is-narrow">
+                                            <div class="control">
+                                                <button class="button is-success" type="submit">Submit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </footer>
+                    </section>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-<vc:cart view="Default"></vc:cart>
