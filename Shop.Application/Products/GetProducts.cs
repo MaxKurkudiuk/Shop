@@ -13,7 +13,7 @@ namespace Shop.Application.Products {
         public IEnumerable<ProductViewModel> Do() => _context.Products.ToList().Select(x => new ProductViewModel {
             Name = x.Name,
             Description = x.Description,
-            Value = $"$ {x.Value:N2}"  // 1100.50 => 1,100.50 => $ 1,100.50
+            Value = $"${x.Value:N2}"  // 1100.50 => 1,100.50 => $ 1,100.50
         });
 
         public class ProductViewModel {

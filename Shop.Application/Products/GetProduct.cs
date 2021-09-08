@@ -33,7 +33,7 @@ namespace Shop.Application.Products {
                 .Select(x => new ProductViewModel() {
                     Name = x.Name,
                     Description = x.Description,
-                    Value = $"$ {x.Value:N2}",  // 1100.50 => 1,100.50 => $ 1,100.50
+                    Value = $"${x.Value:N2}",  // 1100.50 => 1,100.50 => $ 1,100.50
 
                     Stock = x.Stock.Select(y => new StockViewModel() {
                         Id = y.Id,
