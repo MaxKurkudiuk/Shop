@@ -67,7 +67,7 @@ namespace Shop.UI {
 
             services.Configure<StripeSettings>(_config.GetSection("Stripe"));
 
-            services.AddTransient<CreateUser>();    // Dependency Injection
+            services.AddApplicationServices();  // Dependency Injection
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
