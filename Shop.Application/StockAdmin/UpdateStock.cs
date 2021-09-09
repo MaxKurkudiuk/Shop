@@ -11,7 +11,7 @@ namespace Shop.Application.StockAdmin {
             _context = context;
         }
 
-        public async Task<Response> Do(Request request) {
+        public async Task<Response> DoAsync(Request request) {
             var stocks = new List<Stock>();
 
             foreach (var stock in request.Stock) {

@@ -16,7 +16,7 @@ namespace Shop.UI.Controllers {
 
         [HttpPost("")]
         public async Task<IActionResult> CreateUser([FromBody] CreateUser.Request request) {
-            await _createUser.Do(request);
+            await _createUser.DoAsync(request);
 
             return Ok();
         }

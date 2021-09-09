@@ -10,7 +10,7 @@ namespace Shop.Application.StockAdmin {
             _context = context;
         }
 
-        public async Task<bool> Do(int id) {
+        public async Task<bool> DoAsync(int id) {
             var stock = _context.Stock.FirstOrDefault(x => x.Id == id);
             _context.Stock.Remove(stock);
             await _context.SaveChangesAsync();

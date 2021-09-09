@@ -16,7 +16,7 @@ namespace Shop.Application.UsersAdmin {
             public string UserName { get; set; }
         }
 
-        public async Task<bool> Do(Request request) {
+        public async Task<bool> DoAsync(Request request) {
             var managerUser = new IdentityUser(request.UserName);
             await _userManager.CreateAsync(managerUser, "password");
 

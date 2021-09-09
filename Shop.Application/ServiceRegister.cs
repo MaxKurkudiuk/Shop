@@ -1,5 +1,6 @@
 ﻿using Shop.Application.OrdersAdmin;
 using Shop.Application.ProductsAdmin;
+using Shop.Application.StockAdmin;
 using Shop.Application.UsersAdmin;
 
 namespace Microsoft.Extensions.DependencyInjection {
@@ -16,6 +17,11 @@ namespace Microsoft.Extensions.DependencyInjection {
             @this.AddTransient<GetProduct>();
             @this.AddTransient<GetProducts>();
             @this.AddTransient<UpdateProduct>();
+
+            @this.AddTransient<CreateStock>();
+            @this.AddTransient<DeleteStock>();
+            @this.AddTransient<GetStock>();
+            @this.AddTransient<UpdateStock>();
 
             return @this;
         }
