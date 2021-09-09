@@ -8,17 +8,11 @@ namespace Shop.UI.Controllers {
     [Route("[controller]")]
     [Authorize(Policy = "Manager")]
     public class OrdersController : Controller {
-        private ApplicationDbContext _context;
-
-        public OrdersController(ApplicationDbContext context) {
-            _context = context;
-        }
-
         [HttpGet("")]
-        public IActionResult GetOrders(int status) => Ok(new GetOrders(_context).Do(status));
+        public IActionResult GetOrders(int status, [FromServices] GetOrders getOrders) => Ok(getOrders.Do(status));
         [HttpGet("{id}")]
-        public IActionResult GetOrder(int id) => Ok(new GetOrder(_context).Do(id));
+        public IActionResult GetOrder(int id, [FromServices] GetOrder getOrder) => Ok(getOrder.Do(id));
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateOrder(int id) => Ok(await new UpdateOrder(_context).Do(id));
+        public async Task<IActionResult> UpdateOrder(int id, [FromServices] UpdateOrder updateOrder) => Ok(await updateOrder.DoAsync(id));
     }
 }

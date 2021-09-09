@@ -10,7 +10,7 @@ namespace Shop.Application.OrdersAdmin {
             _context = context;
         }
 
-        public async Task<bool> Do(int id) {
+        public async Task<bool> DoAsync(int id) {
             var order = _context.Orders.FirstOrDefault(x => x.Id == id);
 
             order.Status++;
