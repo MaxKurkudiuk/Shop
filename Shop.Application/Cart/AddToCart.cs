@@ -22,19 +22,23 @@ namespace Shop.Application.Cart {
             public int Qty { get; set; }
         }
 
-        public async Task<bool> Do(Request request) {
+        public async Task<bool> DoAsync(Request request) {
             var stockOnHold = _context.StocksOnHold.Where(x => x.SessionId == _session.Id).ToList();
             var stockToHold = _context.Stock.Where(x => x.Id == request.StockId).FirstOrDefault();
 
             if (stockToHold.Qty < request.Qty)
                 return false; // return not enough stock
 
-            _context.StocksOnHold.Add(new StockOnHold() {
-                StockId = stockToHold.Id,
-                SessionId = _session.Id,
-                Qty = request.Qty,
-                ExpiryDate = DateTime.Now.AddMinutes(20)
-            });
+            if (stockOnHold.Any(x => x.StockId == request.StockId)) {
+                stockOnHold.FirstOrDefault(x => x.StockId == request.StockId).Qty += request.Qty;
+            } else {
+                _context.StocksOnHold.Add(new StockOnHold() {
+                    StockId = stockToHold.Id,
+                    SessionId = _session.Id,
+                    Qty = request.Qty,
+                    ExpiryDate = DateTime.Now.AddMinutes(20)
+                });
+            }
 
             stockToHold.Qty -= request.Qty;
 
