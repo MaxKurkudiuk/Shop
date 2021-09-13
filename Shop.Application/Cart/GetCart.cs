@@ -33,6 +33,11 @@ namespace Shop.Application.Cart {
 
             var cartList = JsonConvert.DeserializeObject<List<CartProduct>>(stringObject);
 
+            cartList = cartList.Where(x => x.Qty > 0).ToList();
+
+            if (cartList.Count == 0)
+                return new List<Response>();
+
             var response = _context.Stock
                 .Include(x => x.Product)
                 .AsEnumerable()

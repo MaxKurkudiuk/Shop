@@ -9,7 +9,6 @@ using Shop.Database;
 using System;
 using Stripe;
 using Microsoft.AspNetCore.Identity;
-using Shop.Application.UsersAdmin;
 
 namespace Shop.UI {
     public class Startup {
