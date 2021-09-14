@@ -2,6 +2,7 @@
 using Shop.Application.ProductsAdmin;
 using Shop.Application.StockAdmin;
 using Shop.Application.UsersAdmin;
+using Cart = Shop.Application.Cart;
 
 namespace Microsoft.Extensions.DependencyInjection {
     public static class ServiceRegister {
@@ -22,6 +23,13 @@ namespace Microsoft.Extensions.DependencyInjection {
             @this.AddTransient<DeleteStock>();
             @this.AddTransient<GetStock>();
             @this.AddTransient<UpdateStock>();
+
+            @this.AddTransient<Cart.AddCustomerInformation>();
+            @this.AddTransient<Cart.GetCustomerInformation>();
+            @this.AddTransient<Cart.AddToCart>();
+            @this.AddTransient<Cart.GetCart>();
+            @this.AddTransient<Cart.RemoveFromCart>();
+            @this.AddTransient<Cart.GetOrder>();
 
             return @this;
         }
