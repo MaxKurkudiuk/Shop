@@ -1,17 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Shop.Domain.Infrastructure;
-using Shop.Database;
+﻿using Shop.Domain.Infrastructure;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Shop.Application.Cart {
     public class GetCart {
         private ISessionManager _sessionManager;
-        private ApplicationDbContext _context;
 
-        public GetCart(ISessionManager sessionManager, ApplicationDbContext context) {
+        public GetCart(ISessionManager sessionManager) {
             _sessionManager = sessionManager;
-            _context = context;
         }
 
         public class Response {
@@ -23,26 +18,14 @@ namespace Shop.Application.Cart {
             public int StockId { get; set; }
         }
 
-        public IEnumerable<Response> Do() {
-            var cartList = _sessionManager.GetCart();
-
-            if (cartList == null)
-                return new List<Response>();
-
-            var response = _context.Stock
-                .Include(x => x.Product)
-                .AsEnumerable()
-                .Where(x => cartList.Any(y => y.StockId == x.Id))
-                .Select(x => new Response() {
-                    Name = x.Product.Name,
-                    Value = $"$ {x.Product.Value:N2}",
-                    RealValue = x.Product.Value,
-                    StockId = x.Id,
-                    Qty = cartList.FirstOrDefault(y => y.StockId == x.Id).Qty
-                })
-                .ToList();
-
-            return response;
-        }
+        public IEnumerable<Response> Do() =>
+            _sessionManager
+                .GetCart(x => new Response() {
+                    Name = x.ProductName,
+                    Value = x.Value.GetValueString(),
+                    RealValue = x.Value,
+                    StockId = x.StockId,
+                    Qty = x.Qty
+                });
     }
 }

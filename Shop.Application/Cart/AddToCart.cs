@@ -4,6 +4,7 @@ using Shop.Domain.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Shop.Application.Cart {
     public class AddToCart {
@@ -21,6 +22,7 @@ namespace Shop.Application.Cart {
         }
 
         public interface IStockManager {
+            Stock GetStockWithProduct(int stockId);
             bool EnoughStock(int stockId, int qty);
             Task PutStockOnHold(int stockId, int qty, string sessionId);
         }
@@ -34,6 +36,9 @@ namespace Shop.Application.Cart {
 
             public bool EnoughStock(int stockId, int qty) =>
                 _context.Stock.FirstOrDefault(x => x.Id == stockId).Qty >= qty;
+
+            public Stock GetStockWithProduct(int stockId) =>
+                _context.Stock.Include(x => x.Product).FirstOrDefault(x => x.Id == stockId);
 
             public Task PutStockOnHold(int stockId, int qty, string sessionId) {
                 // begin transaction
@@ -73,7 +78,17 @@ namespace Shop.Application.Cart {
             // database responsibility to update the stock
             await stockManager.PutStockOnHold(request.StockId, request.Qty, _sessionManager.GetId());
 
-            _sessionManager.AddProduct(request.StockId, request.Qty);
+            var stock = stockManager.GetStockWithProduct(request.StockId);
+
+            var cartProduct = new CartProduct() {
+                ProductId = stock.ProductId,
+                ProductName = stock.Product.Name,
+                StockId = stock.Id,
+                Qty = request.Qty,
+                Value = stock.Product.Value
+            };
+
+            _sessionManager.AddProduct(cartProduct);
 
             return true;
         }

@@ -7,11 +7,9 @@ using System.Linq;
 namespace Shop.Application.Cart {
     public class GetOrder {
         private ISessionManager _sessionManager;
-        private ApplicationDbContext _context;
 
-        public GetOrder(ISessionManager sessionManager, ApplicationDbContext context) {
+        public GetOrder(ISessionManager sessionManager) {
             _sessionManager = sessionManager;
-            _context = context;
         }
 
         public class Response {
@@ -40,35 +38,14 @@ namespace Shop.Application.Cart {
             public string PostCode { get; internal set; }
         }
 
-        public decimal GetTotalValue() {
-            var cartList = _sessionManager.GetCart();
-
-            if (cartList == null)
-                return 0;
-
-            return _context.Stock
-                .Include(x => x.Product)
-                .AsEnumerable()
-                .Where(x => cartList.Any(y => y.StockId == x.Id))
-                .Sum(x => x.Product.Value * cartList.FirstOrDefault(y => y.StockId == x.Id).Qty);
-        }
-
         public Response Do() {
-            var cart = _sessionManager.GetCart();
-
-            if (cart == null)
-                return null;
-
-            var listOfProducts = _context.Stock
-                .Include(x => x.Product)
-                .AsEnumerable()
-                .Where(x => cart.Any(y => y.StockId == x.Id))
-                .Select(x => new Product() {
+            var listOfProducts = _sessionManager
+                .GetCart(x => new Product() {
                     ProductId = x.ProductId,
-                    StockId = x.Id,
-                    Value = (int) (x.Product.Value * 100),    // Payment value style
-                    Qty = cart.FirstOrDefault(y => y.StockId == x.Id).Qty
-                }).ToList();
+                    StockId = x.StockId,
+                    Value = (int) (x.Value * 100),    // Payment value style
+                    Qty = x.Qty
+                });
 
             var customerInformation = _sessionManager.GetCustomerInformation();
 
