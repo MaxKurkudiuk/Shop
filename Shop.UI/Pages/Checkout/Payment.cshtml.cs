@@ -6,6 +6,7 @@ using Shop.Database;
 using Stripe;
 using System.Linq;
 using System.Threading.Tasks;
+using Cart = Shop.Application.Cart;
 
 namespace Shop.UI.Pages.Checkout {
     public class PaymentModel : PageModel
@@ -18,11 +19,11 @@ namespace Shop.UI.Pages.Checkout {
             _context = context;
         }
 
-        public IActionResult OnGet()
+        public IActionResult OnGet([FromServices] GetCustomerInformation getCustomerInformation, [FromServices] Cart.GetOrder getOrder)
         {
-            var information = new GetCustomerInformation(HttpContext.Session).Do();
+            var information = getCustomerInformation.Do();
 
-            TotalValue = new Application.Cart.GetOrder(HttpContext.Session, _context).GetTotalValue();
+            TotalValue = getOrder.GetTotalValue();
 
             if (information == null)
                 return RedirectToPage("/Checkout/CustomerInformation");
@@ -30,11 +31,11 @@ namespace Shop.UI.Pages.Checkout {
             return Page();
         }
 
-        public async Task<IActionResult> OnPost(string stripeEmail, string stripeToken) {
+        public async Task<IActionResult> OnPost(string stripeEmail, string stripeToken, [FromServices] Cart.GetOrder getOrder) {
             var customers = new CustomerService();
             var charges = new ChargeService();
 
-            var cartOrder = new Application.Cart.GetOrder(HttpContext.Session, _context).Do();
+            var cartOrder = getOrder.Do();
 
             var customer = customers.Create(new CustomerCreateOptions {
                 Email = stripeEmail,

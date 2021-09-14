@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using Shop.Application.Infrastructure;
 using Shop.Domain.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace Shop.Application.Cart {
     public class AddCustomerInformation {
-        private ISession _session;
+        private ISessionManager _sessionManager;
 
-        public AddCustomerInformation(ISession session) {
-            _session = session;
+        public AddCustomerInformation(ISessionManager sessionManager) {
+            _sessionManager = sessionManager;
         }
 
         public class Request {
@@ -32,8 +32,8 @@ namespace Shop.Application.Cart {
             public string PostCode { get; set; }
         }
 
-        public void Do(Request request) {
-            var customerInformation = new CustomerInformation() {
+        public void Do(Request request) => 
+            _sessionManager.AddCustomerInformation(new CustomerInformation() {
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 Email = request.Email,
@@ -42,11 +42,6 @@ namespace Shop.Application.Cart {
                 Address2 = request.Address2,
                 City = request.City,
                 PostCode = request.PostCode
-            };
-
-            var stringObject = JsonConvert.SerializeObject(customerInformation);
-
-            _session.SetString("customer-info", stringObject);
-        }
+            });
     }
 }

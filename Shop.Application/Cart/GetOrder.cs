@@ -1,19 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
+﻿using Microsoft.EntityFrameworkCore;
+using Shop.Application.Infrastructure;
 using Shop.Database;
-using Shop.Domain.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Shop.Application.Cart {
     public class GetOrder {
-        private ISession _session;
+        private ISessionManager _sessionManager;
         private ApplicationDbContext _context;
 
-        public GetOrder(ISession session, ApplicationDbContext context) {
-            _session = session;
+        public GetOrder(ISessionManager sessionManager, ApplicationDbContext context) {
+            _sessionManager = sessionManager;
             _context = context;
         }
 
@@ -31,10 +28,23 @@ namespace Shop.Application.Cart {
             public int Value { get; set; }
         }
 
+        public class CustomerInformation {
+            public string FirstName { get; internal set; }
+            public string LastName { get; internal set; }
+            public string Email { get; internal set; }
+            public string PhoneNumber { get; internal set; }
+
+            public string Address1 { get; internal set; }
+            public string Address2 { get; internal set; }
+            public string City { get; internal set; }
+            public string PostCode { get; internal set; }
+        }
+
         public decimal GetTotalValue() {
-            var cart = _session.GetString("cart");
-            
-            var cartList = JsonConvert.DeserializeObject<List<CartProduct>>(cart);
+            var cartList = _sessionManager.GetCart();
+
+            if (cartList == null)
+                return 0;
 
             return _context.Stock
                 .Include(x => x.Product)
@@ -44,22 +54,23 @@ namespace Shop.Application.Cart {
         }
 
         public Response Do() {
-            var cart = _session.GetString("cart");
-            var cartList = JsonConvert.DeserializeObject<List<CartProduct>>(cart);
+            var cart = _sessionManager.GetCart();
+
+            if (cart == null)
+                return null;
 
             var listOfProducts = _context.Stock
                 .Include(x => x.Product)
                 .AsEnumerable()
-                .Where(x => cartList.Any(y => y.StockId == x.Id))
+                .Where(x => cart.Any(y => y.StockId == x.Id))
                 .Select(x => new Product() {
                     ProductId = x.ProductId,
                     StockId = x.Id,
                     Value = (int) (x.Product.Value * 100),    // Payment value style
-                    Qty = cartList.FirstOrDefault(y => y.StockId == x.Id).Qty
+                    Qty = cart.FirstOrDefault(y => y.StockId == x.Id).Qty
                 }).ToList();
 
-            var customerInfoString = _session.GetString("customer-info");
-            var customerInformation = JsonConvert.DeserializeObject<CustomerInformation>(customerInfoString);
+            var customerInformation = _sessionManager.GetCustomerInformation();
 
             return new Response {
                 Products = listOfProducts,

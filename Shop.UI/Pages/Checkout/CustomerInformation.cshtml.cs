@@ -15,9 +15,9 @@ namespace Shop.UI.Pages.Checkout {
         [BindProperty]
         public AddCustomerInformation.Request CustomerInformation { get; set; }
 
-        public IActionResult OnGet() {
+        public IActionResult OnGet([FromServices] GetCustomerInformation getCustomerInformation) {
             // Get CustomerInformation
-            var information = new GetCustomerInformation(HttpContext.Session).Do();
+            var information = getCustomerInformation.Do();
 
             // If CustomerInformation exists go to paiment
             if (information == null) {
@@ -38,12 +38,12 @@ namespace Shop.UI.Pages.Checkout {
                 return RedirectToPage("/Checkout/Payment");
         }
 
-        public IActionResult OnPost() {
+        public IActionResult OnPost([FromServices] AddCustomerInformation addCustomerInformation) {
             // Post CustomerInformation
             if (!ModelState.IsValid)
                 return Page();
 
-            new AddCustomerInformation(HttpContext.Session).Do(CustomerInformation);
+            addCustomerInformation.Do(CustomerInformation);
             return RedirectToPage("/Checkout/Payment");
         }
     }

@@ -29,8 +29,8 @@ namespace Shop.UI.Pages {
                 return Page();
         }
 
-        public async Task<IActionResult> OnPost() {
-            var stockAdded = await new AddToCart(HttpContext.Session, _context).DoAsync(CartViewModel);
+        public async Task<IActionResult> OnPost([FromServices] AddToCart addToCart) {
+            var stockAdded = await addToCart.DoAsync(CartViewModel);
 
             if (stockAdded)
                 return RedirectToPage("Cart");
