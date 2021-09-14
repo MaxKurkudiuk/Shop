@@ -9,6 +9,8 @@ using Shop.Database;
 using System;
 using Stripe;
 using Microsoft.AspNetCore.Identity;
+using Shop.Application.Infrastructure;
+using Shop.UI.Infrastructure;
 
 namespace Shop.UI {
     public class Startup {
@@ -20,6 +22,8 @@ namespace Shop.UI {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
+            services.AddHttpContextAccessor();
+
             services.Configure<CookiePolicyOptions>(options => {
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
@@ -61,6 +65,8 @@ namespace Shop.UI {
                 options.Cookie.Name = "Cart";
                 options.Cookie.MaxAge = TimeSpan.FromMinutes(20);
             });
+
+            services.AddTransient<ISessionManager, SessionManager>();
 
             StripeConfiguration.ApiKey = _config.GetSection("Stripe")["SecretKey"];
 
