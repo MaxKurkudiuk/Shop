@@ -1,7 +1,7 @@
 ﻿using Shop.Domain.Models;
 using System.Collections.Generic;
 
-namespace Shop.Application.Infrastructure {
+namespace Shop.Domain.Infrastructure {
     public interface ISessionManager {
         string GetId();
         void AddProduct(int stockId, int qty);

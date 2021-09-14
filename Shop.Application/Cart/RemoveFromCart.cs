@@ -1,4 +1,4 @@
-﻿using Shop.Application.Infrastructure;
+﻿using Shop.Domain.Infrastructure;
 using Shop.Database;
 using System;
 using System.Linq;

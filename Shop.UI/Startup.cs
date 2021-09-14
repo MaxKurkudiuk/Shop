@@ -9,7 +9,7 @@ using Shop.Database;
 using System;
 using Stripe;
 using Microsoft.AspNetCore.Identity;
-using Shop.Application.Infrastructure;
+using Shop.Domain.Infrastructure;
 using Shop.UI.Infrastructure;
 
 namespace Shop.UI {

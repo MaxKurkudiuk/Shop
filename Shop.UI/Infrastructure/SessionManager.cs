@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using Shop.Application.Infrastructure;
+using Shop.Domain.Infrastructure;
 using Shop.Domain.Models;
 using System.Collections.Generic;
 using System.Linq;
