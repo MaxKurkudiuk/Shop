@@ -12,8 +12,6 @@ namespace Shop.UI.Pages.Checkout {
     public class PaymentModel : PageModel
     {
         private ApplicationDbContext _context;
-        public decimal TotalValue { get; set; }
-        public int TotalValueInt { get => (int) (TotalValue * 100); }
 
         public PaymentModel(ApplicationDbContext context) {
             _context = context;
@@ -22,8 +20,6 @@ namespace Shop.UI.Pages.Checkout {
         public IActionResult OnGet([FromServices] GetCustomerInformation getCustomerInformation, [FromServices] Cart.GetOrder getOrder)
         {
             var information = getCustomerInformation.Do();
-
-            TotalValue = getOrder.GetTotalValue();
 
             if (information == null)
                 return RedirectToPage("/Checkout/CustomerInformation");

@@ -1,6 +1,5 @@
 ﻿@page
 @inject IOptions<StripeSettings> Stripe
-@model Shop.UI.Pages.Checkout.PaymentModel
 @{
 }
 
@@ -10,7 +9,7 @@
         <p class="title">Payment</p>
         <form method="post">
             <div class="field">
-                <script src="//checkout.stripe.com/v2/checkout.js" class="stripe-button" data-key="@Stripe.Value.PublishableKey" data-locale="auto" data-description="Sample Charge" data-amount="@Model.TotalValueInt">
+                <script src="//checkout.stripe.com/v2/checkout.js" class="stripe-button" data-key="@Stripe.Value.PublishableKey" data-locale="auto" data-description="Sample Charge" data-amount="Pay">
                 </script>
             </div>
             <div class="field">
