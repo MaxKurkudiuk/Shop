@@ -26,8 +26,10 @@ namespace Shop.Application.Cart {
             var stockOnHold = _context.StocksOnHold.FirstOrDefault(x => x.StockId == request.StockId && x.SessionId == _sessionManager.GetId());
             var stockToHold = _context.Stock.FirstOrDefault(x => x.Id == request.StockId);
 
-            if (stockOnHold == null)
-                return true; // return can't find any stock on hold by currect sessionId
+            if (stockOnHold == null && !request.All)
+                return false; // return can't find any stock on hold by currect sessionId
+            else if (stockOnHold == null && request.All)
+                return true;
 
             if (request.All) {
                 stockToHold.Qty += stockOnHold.Qty;
