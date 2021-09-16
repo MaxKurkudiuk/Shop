@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Cart;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Shop.UI.Controllers {
@@ -31,17 +33,18 @@ namespace Shop.UI.Controllers {
             return BadRequest("Failed to remove item from cart");
         }
 
-        //[HttpPost("{stockId}")]
-        //public async Task<IActionResult> RemoveAll(int stockId, [FromServices] RemoveFromCart removeAllFromCart) {
-        //    var request = new RemoveFromCart.Request() {
-        //        StockId = stockId,
-        //        Qty = 0
-        //    };
-        //    var success = await removeAllFromCart.DoAsync(request);
-        //    if (success) {
-        //        return Ok("Item removed all items from cart");
-        //    }
-        //    return BadRequest("Failed to remove all items from cart");
-        //}
+        [HttpGet]
+        public IActionResult GetCartComponent([FromServices] GetCart getCart) {
+            var totalValue = getCart.Do().Sum(x => x.RealValue * x.Qty);
+
+            return PartialView("Components/Cart/Small", $"${totalValue:N2}");
+        }
+        
+        [HttpGet]
+        public IActionResult GetCartMain([FromServices] GetCart getCart) {
+            var cart = getCart.Do();
+
+            return PartialView("_CartPartial", cart);
+        }
     }
 }
