@@ -52,12 +52,8 @@
         var updateCart = function () {
             axios.get("/Cart/GetCartComponent")
                 .then(res => {
-                    console.log("res from GetCartComponent");
-                    console.log(res.data);
-
                     var html = res.data;
                     var el = document.getElementById('cart-nav');
-                    console.log(el);
 
                     el.outerHTML = html;
                 })
@@ -66,12 +62,8 @@
                 });
             axios.get("/Cart/GetCartMain")
                 .then(res => {
-                    console.log("res from GetCartMain");
-                    console.log(res.data);
-
                     var html = res.data;
                     var el = document.getElementById('cart-main');
-                    console.log(el);
 
                     el.outerHTML = html;
                 })
