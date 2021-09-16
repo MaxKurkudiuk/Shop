@@ -66,7 +66,8 @@ namespace Shop.UI {
                 options.Cookie.MaxAge = TimeSpan.FromMinutes(20);
             });
 
-            services.AddTransient<ISessionManager, SessionManager>();
+            services.AddScoped<ISessionManager, SessionManager>();  // new in session
+            services.AddTransient<IStockManager, StockManager>();   // new in request
 
             StripeConfiguration.ApiKey = _config.GetSection("Stripe")["SecretKey"];
 
