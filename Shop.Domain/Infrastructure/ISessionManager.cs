@@ -6,7 +6,7 @@ namespace Shop.Domain.Infrastructure {
     public interface ISessionManager {
         string GetId();
         void AddProduct(CartProduct cartProduct);
-        void RemoveProduct(int stockId, int qty, bool isAll);
+        void RemoveProduct(int stockId, int qty);
         IEnumerable<TResult> GetCart<TResult>(Func<CartProduct, TResult> selector);
 
         void AddCustomerInformation(CustomerInformation customer);

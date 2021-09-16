@@ -71,29 +71,30 @@
                 });
         }
 
-        var removeOneFromCart = function (e) {
+        var removeOneFromCart = function (e, qty) {
             var stockId = e.target.dataset.stockId;
-
-            axios.post("/Cart/RemoveOne/" + stockId)
-                .then(res => {
-                    var el = document.getElementById("stock-" + stockId);
-
-                    var qty = parseInt(el.innerText);
-
-                    el.innerText = (qty - 1);
-                })
-                .catch(err => {
-                    alert(err.error);
-                });
+            if (qty === null || qty === undefined)
+                qty = 1;
+            removeFromCart(stockId, qty);
         }
 
         var removeAllFromCart = function (e) {
             var stockId = e.target.dataset.stockId;
+            var el = document.getElementById("stock-" + stockId);
+            var qty = parseInt(el.innerText);
+            removeFromCart(stockId, qty);
+        }
 
-            axios.post("/Cart/RemoveAll/" + stockId)
+        var removeFromCart = function (stockId, qty) {
+            axios.post("/Cart/Remove/" + stockId + '/' + qty)
                 .then(res => {
-                    var el = document.getElementById("product-" + stockId);
-                    el.outerHTML = "";
+                    var el = document.getElementById("stock-" + stockId);
+                    var resQty = parseInt(el.innerText) - qty;
+
+                    if (resQty > 0)
+                        el.innerText = resQty;
+                    else
+                        el.closest(".level").remove();
                 })
                 .catch(err => {
                     alert(err.error);

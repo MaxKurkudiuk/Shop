@@ -18,11 +18,11 @@ namespace Shop.UI.Controllers {
             return BadRequest("Failed to add to cart");
         }
 
-        [HttpPost("{stockId}")]
-        public async Task<IActionResult> RemoveOne(int stockId, [FromServices] RemoveFromCart removeFromCart) {
+        [HttpPost("{stockId}/{qty}")]
+        public async Task<IActionResult> Remove(int stockId, int qty, [FromServices] RemoveFromCart removeFromCart) {
             var request = new RemoveFromCart.Request() {
                 StockId = stockId,
-                Qty = 1,
+                Qty = qty,
             };
             var success = await removeFromCart.DoAsync(request);
             if (success) {
@@ -31,17 +31,17 @@ namespace Shop.UI.Controllers {
             return BadRequest("Failed to remove item from cart");
         }
 
-        [HttpPost("{stockId}")]
-        public async Task<IActionResult> RemoveAll(int stockId, [FromServices] RemoveFromCart removeAllFromCart) {
-            var request = new RemoveFromCart.Request() {
-                StockId = stockId,
-                All = true
-            };
-            var success = await removeAllFromCart.DoAsync(request);
-            if (success) {
-                return Ok("Item removed all items from cart");
-            }
-            return BadRequest("Failed to remove all items from cart");
-        }
+        //[HttpPost("{stockId}")]
+        //public async Task<IActionResult> RemoveAll(int stockId, [FromServices] RemoveFromCart removeAllFromCart) {
+        //    var request = new RemoveFromCart.Request() {
+        //        StockId = stockId,
+        //        Qty = 0
+        //    };
+        //    var success = await removeAllFromCart.DoAsync(request);
+        //    if (success) {
+        //        return Ok("Item removed all items from cart");
+        //    }
+        //    return BadRequest("Failed to remove all items from cart");
+        //}
     }
 }

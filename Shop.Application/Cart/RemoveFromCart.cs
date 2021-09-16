@@ -17,34 +17,29 @@ namespace Shop.Application.Cart {
         public class Request {
             public int StockId { get; set; }
             public int Qty { get; set; }
-            public bool All { get; set; }
+        }
+
+        public Task RemoveFromHold(int stockId, int qty, string sessionId) {
+            var stockOnHold = _context.StocksOnHold.FirstOrDefault(x => x.StockId == stockId && x.SessionId == sessionId);
+            var stockToHold = _context.Stock.FirstOrDefault(x => x.Id == stockId);
+
+            if (qty == 0)     // All
+                stockToHold.Qty += stockOnHold.Qty;
+            else
+                stockToHold.Qty += qty;
+
+            stockOnHold.Qty -= qty;
+
+            if (stockOnHold.Qty <= 0)
+                _context.Remove(stockOnHold);
+
+            return _context.SaveChangesAsync();  // save new StockOnHold and update Stock => stockOnHold.Qty
         }
 
         public async Task<bool> DoAsync(Request request) {
-            _sessionManager.RemoveProduct(request.StockId, request.Qty, request.All);
+            await RemoveFromHold(request.StockId, request.Qty, _sessionManager.GetId());
 
-            var stockOnHold = _context.StocksOnHold.FirstOrDefault(x => x.StockId == request.StockId && x.SessionId == _sessionManager.GetId());
-            var stockToHold = _context.Stock.FirstOrDefault(x => x.Id == request.StockId);
-
-            if (stockOnHold == null && !request.All)
-                return false; // return can't find any stock on hold by currect sessionId
-            else if (stockOnHold == null && request.All)
-                return true;
-
-            if (request.All) {
-                stockToHold.Qty += stockOnHold.Qty;
-                stockOnHold.Qty = 0;
-            } else {
-                stockToHold.Qty += request.Qty;
-                stockOnHold.Qty -= request.Qty;
-            }
-
-            if (stockOnHold.Qty <= 0)
-                _context.StocksOnHold.Remove(stockOnHold);
-            else
-                stockOnHold.ExpiryDate = DateTime.Now.AddMinutes(20);
-
-            await _context.SaveChangesAsync();  // save new StockOnHold and update Stock => stockOnHold.Qty
+            _sessionManager.RemoveProduct(request.StockId, request.Qty);
 
             return true;
         }

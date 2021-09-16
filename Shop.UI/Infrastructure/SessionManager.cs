@@ -64,7 +64,7 @@ namespace Shop.UI.Infrastructure {
 
         public string GetId() => _session.Id;
 
-        public void RemoveProduct(int stockId, int qty, bool isAll) {
+        public void RemoveProduct(int stockId, int qty) {
             var cartList = new List<CartProduct>();
             var stringObject = _session.GetString("cart");
 
@@ -75,7 +75,7 @@ namespace Shop.UI.Infrastructure {
 
             if (!cartList.Any(x => x.StockId == stockId))
                 return;
-            else if (cartList.Find(x => x.StockId == stockId).Qty <= 0 || isAll)
+            else if (cartList.Find(x => x.StockId == stockId).Qty <= 0 || qty == 0)
                 cartList.FirstOrDefault(x => x.StockId == stockId).Qty = 0;
             else
                 cartList.FirstOrDefault(x => x.StockId == stockId).Qty -= qty;

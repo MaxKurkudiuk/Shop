@@ -56,7 +56,7 @@
                                     <div class="field-body">
                                         <div class="field is-narrow">
                                             <div class="control">
-                                                <input class="input" asp-for="CartViewModel.Qty" value="1" />
+                                                <input class="input" asp-for="CartViewModel.Qty" value="1" min="1"/>
                                             </div>
                                             @foreach (var stock in Model.Product.Stock) {
                                                 if (stock.Qty <= 10) {
