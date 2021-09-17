@@ -3,6 +3,8 @@ using Shop.Application.ProductsAdmin;
 using Shop.Application.StockAdmin;
 using Shop.Application.UsersAdmin;
 using Cart = Shop.Application.Cart;
+using Orders = Shop.Application.Orders;
+using Products = Shop.Application.Products;
 
 namespace Microsoft.Extensions.DependencyInjection {
     public static class ServiceRegister {
@@ -30,6 +32,12 @@ namespace Microsoft.Extensions.DependencyInjection {
             @this.AddTransient<Cart.GetCart>();
             @this.AddTransient<Cart.RemoveFromCart>();
             @this.AddTransient<Cart.GetOrder>();
+
+            @this.AddTransient<Orders.CreateOrder>();
+            @this.AddTransient<Orders.GetOrder>();
+
+            @this.AddTransient<Products.GetProduct>();
+            @this.AddTransient<Products.GetProducts>();
 
             return @this;
         }

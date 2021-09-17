@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Shop.Application.Cart;
 using Shop.Application.Orders;
-using Shop.Database;
 using Stripe;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,12 +10,6 @@ using Cart = Shop.Application.Cart;
 namespace Shop.UI.Pages.Checkout {
     public class PaymentModel : PageModel
     {
-        private ApplicationDbContext _context;
-
-        public PaymentModel(ApplicationDbContext context) {
-            _context = context;
-        }
-
         public IActionResult OnGet([FromServices] GetCustomerInformation getCustomerInformation, [FromServices] Cart.GetOrder getOrder)
         {
             var information = getCustomerInformation.Do();
@@ -27,7 +20,8 @@ namespace Shop.UI.Pages.Checkout {
             return Page();
         }
 
-        public async Task<IActionResult> OnPost(string stripeEmail, string stripeToken, [FromServices] Cart.GetOrder getOrder) {
+        public async Task<IActionResult> OnPost(string stripeEmail, string stripeToken,
+                [FromServices] Cart.GetOrder getOrder, [FromServices] CreateOrder createOrder) {
             var customers = new CustomerService();
             var charges = new ChargeService();
 
@@ -48,7 +42,7 @@ namespace Shop.UI.Pages.Checkout {
             var sessionId = HttpContext.Session.Id;
 
             // create order
-            await new CreateOrder(_context).Do(new CreateOrder.Request() {
+            await createOrder.Do(new CreateOrder.Request() {
                 StripeReference = charge.Id,
                 SessionId = sessionId,
 
